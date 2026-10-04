@@ -8,51 +8,15 @@
 
 <body>
 
-<p id="mensaje">Redirigiendo...</p>
+<p>Redirigiendo...</p>
 
 <script>
-
 const API = "TU_URL_EXEC";
 const ID = "061";
 
-fetch(API + "?id=" + ID + "&t=" + Date.now(), {
-    method: "GET",
-    cache: "no-store"
-})
-
-.then(respuesta => {
-
-    if (!respuesta.ok) {
-        throw new Error("Servidor: " + respuesta.status);
-    }
-
-    return respuesta.json();
-})
-
-.then(datos => {
-
-    if (datos.destino) {
-
-        window.location.replace(datos.destino);
-
-    } else {
-
-        document.getElementById("mensaje").textContent =
-            "Este QR todavía no está configurado.";
-
-    }
-
-})
-
-.catch(error => {
-
-    console.error(error);
-
-    document.getElementById("mensaje").textContent =
-        "Error al conectar con el servidor.";
-
-});
-
+window.location.replace(
+    API + "?id=" + ID
+);
 </script>
 
 </body>
