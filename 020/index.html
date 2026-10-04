@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>QR 020</title>
+</head>
+
+<body>
+
+    <p id="mensaje">Redirigiendo...</p>
+
+    <script src="../config.js"></script>
+
+    <script>
+        const id = "020";
+        const destino = window.QR_DESTINATIONS[id];
+
+        if (destino) {
+            window.location.replace(destino);
+        } else {
+            document.getElementById("mensaje").textContent =
+                "Este QR todavía no está configurado.";
+        }
+    </script>
+
+</body>
+</html>

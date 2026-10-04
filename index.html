@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Dinámico</title>
+</head>
+
+<body>
+
+    <h1>QR Dinámico</h1>
+    <p id="mensaje">Buscando destino...</p>
+
+    <script>
+
+        // AQUÍ VAMOS A GUARDAR LOS DESTINOS
+        const destinos = {
+
+            "001": "https://maps.app.goo.gl/AbaabVrCa3ykF92L9"
+
+        };
+
+
+        // OBTENER EL NÚMERO DEL QR
+        const parametros = new URLSearchParams(window.location.search);
+        const id = parametros.get("id");
+
+
+        // BUSCAR EL DESTINO
+        const destino = destinos[id];
+
+
+        // REDIRIGIR
+        if (destino) {
+
+            window.location.href = destino;
+
+        } else {
+
+            document.getElementById("mensaje").textContent =
+                "Este QR todavía no está configurado.";
+
+        }
+
+    </script>
+
+</body>
+</html>
