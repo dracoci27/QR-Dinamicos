@@ -2,26 +2,34 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR 100</title>
 </head>
-
 <body>
 
-    <p id="mensaje">Redirigiendo...</p>
+<p id="mensaje">Redirigiendo...</p>
 
-    <script src="../config.js"></script>
+<script>
+    const API = "TU_URL_DE_APPS_SCRIPT";
+    const ID = "100";
 
-    <script>
-        const id = "100";
-        const destino = window.QR_DESTINATIONS[id];
-
-        if (destino) {
-            window.location.replace(destino);
+    fetch(API + "?id=" + ID + "&t=" + Date.now(), {
+        cache: "no-store"
+    })
+    .then(respuesta => respuesta.json())
+    .then(datos => {
+        if (datos.destino) {
+            window.location.replace(datos.destino);
         } else {
             document.getElementById("mensaje").textContent =
                 "Este QR todavía no está configurado.";
         }
-    </script>
+    })
+    .catch(() => {
+        document.getElementById("mensaje").textContent =
+            "Error al conectar con el servidor.";
+    });
+</script>
 
 </body>
 </html>

@@ -8,25 +8,26 @@
 
 <body>
 
-    <h1>QR Dinámico</h1>
-    <p id="mensaje">Buscando destino...</p>
+    <p id="mensaje">Redirigiendo...</p>
 
     <script>
 
-        // AQUÍ VAMOS A GUARDAR LOS DESTINOS
+        // AQUÍ PONDREMOS LOS DESTINOS
         const destinos = {
-
-            "001": "https://maps.app.goo.gl/AbaabVrCa3ykF92L9"
-
+            "001": "https://www.google.com",
+            "002": "https://www.google.com",
+            "003": "https://www.google.com"
         };
 
 
-        // OBTENER EL NÚMERO DEL QR
-        const parametros = new URLSearchParams(window.location.search);
-        const id = parametros.get("id");
+        // OBTENER LA RUTA
+        const ruta = window.location.pathname;
+
+        // Quitar "/" del principio
+        const id = ruta.replace("/", "");
 
 
-        // BUSCAR EL DESTINO
+        // BUSCAR DESTINO
         const destino = destinos[id];
 
 
