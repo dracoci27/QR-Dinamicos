@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Panel QR</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+        }
+
+        .fila {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .id {
+            width: 60px;
+            padding: 10px;
+        }
+
+        .link {
+            flex: 1;
+            padding: 10px;
+        }
+
+        button {
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<h1>Panel de QR dinámicos</h1>
+
+<div id="lista"></div>
+
+
+<!-- Ventana invisible para recibir la respuesta -->
+<iframe
+    name="respuesta"
+    id="respuesta"
+    style="display:none;">
+</iframe>
+
+
+<script>
+
+const API = "https://script.google.com/macros/s/AKfycbyrEf8dEH4CJNdJWmvHkOhkEIt_XSsGEV3_d8q4LGmPWxji2MTq_up6tljZ1KbYX_97/exec";
+
+const CLAVE = "2246";
+
+const lista = document.getElementById("lista");
+
+
+for (let i = 1; i <= 100; i++) {
+
+    const id = String(i).padStart(3, "0");
+
+    const fila = document.createElement("div");
+
+    fila.className = "fila";
+
+    fila.innerHTML = `
+
+        <input
+            class="id"
+            value="${id}"
+            readonly
+        >
+
+        <input
+            class="link"
+            id="link-${id}"
+            placeholder="Link del negocio"
+        >
+
+        <button
+            onclick="guardar('${id}')">
+            Guardar
+        </button>
+
+    `;
+
+    lista.appendChild(fila);
+}
+
+
+function guardar(id) {
+
+    const destino = document
+        .getElementById("link-" + id)
+        .value
+        .trim();
+
+
+    if (!destino) {
+
+        alert("Pon un link primero.");
+
+        return;
+    }
+
+
+    if (!/^https?:\/\//i.test(destino)) {
+
+        alert(
+            "El link debe comenzar con https://"
+        );
+
+        return;
+    }
+
+
+    // Crear formulario
+    const formulario =
+        document.createElement("form");
+
+
+    formulario.method = "POST";
+
+    formulario.action = API;
+
+    formulario.target = "respuesta";
+
+
+    // ID
+    const campoID =
+        document.createElement("input");
+
+    campoID.type = "hidden";
+
+    campoID.name = "id";
+
+    campoID.value = id;
+
+
+    // Destino
+    const campoDestino =
+        document.createElement("input");
+
+    campoDestino.type = "hidden";
+
+    campoDestino.name = "destino";
+
+    campoDestino.value = destino;
+
+
+    // Clave
+    const campoClave =
+        document.createElement("input");
+
+    campoClave.type = "hidden";
+
+    campoClave.name = "clave";
+
+    campoClave.value = CLAVE;
+
+
+    formulario.appendChild(campoID);
+
+    formulario.appendChild(campoDestino);
+
+    formulario.appendChild(campoClave);
+
+
+    document.body.appendChild(formulario);
+
+
+    formulario.submit();
+
+
+    setTimeout(() => {
+
+        alert(
+            "✅ Solicitud enviada para QR " + id
+        );
+
+        formulario.remove();
+
+    }, 1000);
+
+}
+
+</script>
+
+</body>
+
+</html>

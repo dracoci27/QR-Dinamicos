@@ -5,30 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR 046</title>
 </head>
+
 <body>
 
 <p id="mensaje">Redirigiendo...</p>
 
 <script>
-    const API = "TU_URL_DE_APPS_SCRIPT";
-    const ID = "046";
 
-    fetch(API + "?id=" + ID + "&t=" + Date.now(), {
-        cache: "no-store"
-    })
-    .then(respuesta => respuesta.json())
-    .then(datos => {
-        if (datos.destino) {
-            window.location.replace(datos.destino);
-        } else {
-            document.getElementById("mensaje").textContent =
-                "Este QR todavía no está configurado.";
-        }
-    })
-    .catch(() => {
+const API = "TU_URL_EXEC";
+const ID = "046";
+
+fetch(API + "?id=" + ID + "&t=" + Date.now(), {
+    method: "GET",
+    cache: "no-store"
+})
+
+.then(respuesta => {
+
+    if (!respuesta.ok) {
+        throw new Error("Servidor: " + respuesta.status);
+    }
+
+    return respuesta.json();
+})
+
+.then(datos => {
+
+    if (datos.destino) {
+
+        window.location.replace(datos.destino);
+
+    } else {
+
         document.getElementById("mensaje").textContent =
-            "Error al conectar con el servidor.";
-    });
+            "Este QR todavía no está configurado.";
+
+    }
+
+})
+
+.catch(error => {
+
+    console.error(error);
+
+    document.getElementById("mensaje").textContent =
+        "Error al conectar con el servidor.";
+
+});
+
 </script>
 
 </body>
