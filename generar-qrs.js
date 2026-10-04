@@ -6,7 +6,7 @@ const usuario = "dracoci27";
 const repositorio = "QR-Dinamicos";
 
 const API =
-  "https://script.google.com/macros/s/AKfycbyrEf8dEH4CJNdJWmvHkOhkEIt_XSsGEV3_d8q4LGmPWxji2MTq_up6tljZ1KbYX_97/exec";
+  "https://script.google.com/macros/s/AKfycbyKuaUF06D0P78coVg9YQpQak2_7W9hQvNoseVpZfjqvst5wiDvhVHE3LbVfaO2RNcW/exec";
 
 const carpetaQR = path.join(__dirname, "QR-PNG");
 
@@ -19,22 +19,20 @@ async function generar() {
   for (let numero = 1; numero <= 100; numero++) {
 
     const id = String(numero).padStart(3, "0");
-
-    // Crear carpeta si no existe
     const carpetaID = path.join(__dirname, id);
 
     if (!fs.existsSync(carpetaID)) {
       fs.mkdirSync(carpetaID);
     }
 
-    // Crear index.html
     const html = `<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Redirigiendo...</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Redirigiendo...</title>
 </head>
+
 <body>
 
 <p>Redirigiendo...</p>
@@ -43,24 +41,13 @@ async function generar() {
 const API = "${API}";
 const ID = "${id}";
 
-window.qrCallback = function(datos) {
-
-  if (datos.destino) {
-    window.location.replace(datos.destino);
-  } else {
-    document.body.innerHTML =
-      "<h2>Este QR todavía no está configurado.</h2>";
-  }
-
-};
-
 const script = document.createElement("script");
 
 script.src =
   API +
   "?id=" +
   ID +
-  "&callback=qrCallback&t=" +
+  "&modo=redirect&t=" +
   Date.now();
 
 document.head.appendChild(script);
@@ -75,9 +62,8 @@ document.head.appendChild(script);
       "utf8"
     );
 
-    // URL que quedará IMPRESA en el QR
     const url =
-      `https://${usuario}.github.io/${repositorio}/${id}/index.html`;
+      `https://${usuario}.github.io/${repositorio}/${id}/`;
 
     await QRCode.toFile(
       path.join(carpetaQR, `${id}.png`),
@@ -92,9 +78,9 @@ document.head.appendChild(script);
   }
 
   console.log("");
-  console.log("================================");
-  console.log("✅ 100 QR DEFINITIVOS CREADOS");
-  console.log("================================");
+  console.log("====================================");
+  console.log("✅ 100 QR DEFINITIVOS GENERADOS");
+  console.log("====================================");
 }
 
 generar();
